@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="theme-color" content="#0a0f1e"/>
+<title>WeTech — Pago Personalizado</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;600;700;800;900&family=Barlow+Condensed:wght@700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0f1e;
+  --bg2:#111827;
+  --card:#151d2e;
+  --card2:#1a2338;
+  --border:#1e2d47;
+  --border2:#243354;
+  --text:#f0f4ff;
+  --muted:#8896b3;
+  --blue:#2563eb;
+  --blue-dk:#1d4ed8;
+  --blue-lt:#3b82f6;
+  --blue-glow:rgba(37,99,235,0.3);
+  --cyan:#06b6d4;
+  --cyan-glow:rgba(6,182,212,0.2);
+  --green:#10b981;
+  --green-light:rgba(16,185,129,0.1);
+  --red:#ef4444;
+  --shadow:0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md:0 4px 20px rgba(0,0,0,0.5);
+  --radius:14px;
+  --safe-top:env(safe-area-inset-top);
+  --safe-bot:env(safe-area-inset-bottom);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{overscroll-behavior:none;background:var(--bg);}
+body{font-family:'Barlow',sans-serif;color:var(--text);font-size:15px;-webkit-font-smoothing:antialiased;}
+
+/* HEADER */
+.header{
+  background:rgba(10,15,30,0.95);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:calc(14px + var(--safe-top)) 20px 14px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+}
+.logo{display:flex;flex-direction:column;line-height:1;}
+.logo-we{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--text);letter-spacing:2px;}
+.logo-tech{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:18px;color:var(--blue-lt);letter-spacing:4px;}
+.logo-tag{font-size:8px;color:var(--muted);letter-spacing:3px;text-transform:uppercase;margin-top:2px;}
+
+/* SCREENS */
+.screen{display:none;min-height:calc(100vh - 57px);}
+.screen.active{display:block;}
+.form-wrap{padding:20px 16px;max-width:520px;margin:0 auto;}
+
+/* CARD */
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--radius);
+  padding:22px;
+  margin-bottom:14px;
+  box-shadow:var(--shadow);
+}
+
+/* FIELDS */
+.field-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:6px;display:block;}
+.field-input{
+  width:100%;
+  background:var(--bg2);
+  border:1.5px solid var(--border2);
+  border-radius:10px;
+  padding:14px 16px;
+  font-size:15px;
+  color:var(--text);
+  outline:none;
+  margin-bottom:14px;
+  font-family:'Barlow',sans-serif;
+  transition:border-color 0.2s,box-shadow 0.2s;
+  -webkit-appearance:none;
+}
+.field-input:focus{border-color:var(--blue-lt);box-shadow:0 0 0 3px var(--blue-glow);}
+.field-input::placeholder{color:#4a5568;}
+textarea.field-input{resize:none;height:90px;}
+
+/* BUTTONS */
+.btn-main{
+  width:100%;
+  background:linear-gradient(135deg,var(--blue),var(--blue-dk));
+  color:white;border:none;
+  border-radius:12px;padding:16px;
+  font-size:15px;font-weight:800;
+  font-family:'Barlow',sans-serif;
+  cursor:pointer;transition:all 0.2s;
+  box-shadow:0 4px 16px var(--blue-glow);
+  letter-spacing:0.5px;
+  -webkit-appearance:none;
+}
+.btn-main:active{transform:scale(0.98);opacity:0.9;}
+.btn-main:disabled{background:#1e2d47;box-shadow:none;cursor:not-allowed;color:var(--muted);}
+.btn-ghost{
+  background:transparent;
+  border:1.5px solid var(--border2);
+  color:var(--muted);
+  border-radius:12px;padding:14px;
+  font-size:14px;cursor:pointer;
+  font-family:'Barlow',sans-serif;
+  -webkit-appearance:none;font-weight:600;
+  width:100%;margin-top:10px;
+  transition:all 0.2s;
+}
+.btn-ghost:active{border-color:var(--blue-lt);color:var(--blue-lt);}
+
+/* HERO */
+.hero{
+  background:linear-gradient(160deg,#0d1b3e 0%,#0a0f1e 60%,#0d1b3e 100%);
+  padding:40px 20px 32px;
+  text-align:center;
+  position:relative;
+  overflow:hidden;
+  border-bottom:1px solid var(--border);
+}
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(37,99,235,0.15) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-logo{margin-bottom:16px;}
+.hero-logo-we{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:42px;color:white;letter-spacing:4px;display:block;line-height:1;}
+.hero-logo-tech{font-family:'Barlow Condensed',sans-serif;font-weight:900;font-size:42px;color:var(--blue-lt);letter-spacing:8px;display:block;line-height:1;}
+.hero-slogan{font-size:10px;color:var(--muted);letter-spacing:4px;text-transform:uppercase;margin-top:6px;}
+.hero-divider{width:40px;height:2px;background:var(--blue-lt);margin:16px auto;}
+.hero-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:1px;margin-bottom:6px;}
+.hero-sub{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* MONTO PREVIEW */
+.monto-preview{
+  background:linear-gradient(135deg,rgba(37,99,235,0.15),rgba(6,182,212,0.1));
+  border:1.5px solid var(--blue);
+  border-radius:12px;padding:16px;margin-bottom:14px;text-align:center;
+}
+.monto-preview-label{font-size:10px;color:var(--blue-lt);font-weight:700;text-transform:uppercase;letter-spacing:2px;margin-bottom:4px;}
+.monto-preview-val{font-family:'Barlow Condensed',sans-serif;font-size:40px;font-weight:900;color:var(--text);}
+
+/* CONFIRM */
+.confirm-top{
+  background:linear-gradient(135deg,#0d1b3e,#111827);
+  border-bottom:1px solid var(--border);
+  padding:24px 20px;
+}
+.confirm-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-md);margin-bottom:14px;}
+.confirm-body{padding:20px;}
+.summary-box{background:var(--bg2);border-radius:10px;padding:16px;margin-bottom:14px;border:1px solid var(--border);}
+.summary-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:10px;font-weight:700;}
+.summary-item{display:flex;justify-content:space-between;align-items:flex-start;font-size:13px;padding:7px 0;border-bottom:1px solid var(--border);font-weight:500;gap:12px;}
+.summary-item:last-child{border:none;}
+.summary-item-key{color:var(--muted);}
+.summary-item-val{text-align:right;color:var(--text);font-size:13px;max-width:60%;}
+.summary-total{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-top:14px;padding:16px;
+  background:linear-gradient(135deg,rgba(37,99,235,0.15),rgba(6,182,212,0.08));
+  border:1.5px solid var(--blue);border-radius:12px;
+}
+.total-label{font-size:12px;color:var(--blue-lt);font-weight:700;text-transform:uppercase;letter-spacing:1px;}
+.total-amt{font-family:'Barlow Condensed',sans-serif;font-size:32px;font-weight:900;color:var(--text);}
+
+/* NOTIF */
+.notif-box{margin-top:14px;}
+.notif-row{display:flex;align-items:flex-start;gap:8px;padding:12px 14px;border-radius:10px;font-size:13px;margin-bottom:8px;font-weight:600;line-height:1.5;}
+.notif-ok{background:var(--green-light);border:1.5px solid var(--green);color:var(--green);}
+.notif-fail{background:rgba(239,68,68,0.1);border:1.5px solid var(--red);color:var(--red);}
+
+/* PAYMENT BUTTONS */
+.btn-mp{
+  width:100%;background:#009ee3;color:white;border:none;
+  border-radius:12px;padding:16px;font-size:15px;font-weight:800;
+  font-family:'Barlow',sans-serif;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:all 0.2s;box-shadow:0 4px 16px rgba(0,158,227,0.3);
+  -webkit-appearance:none;
+}
+.btn-mp:active{transform:scale(0.97);}
+.btn-mp:disabled{background:#1e2d47;box-shadow:none;cursor:not-allowed;}
+.btn-wa{
+  width:100%;background:#25D366;color:white;border:none;
+  border-radius:12px;padding:15px;font-size:15px;font-weight:800;
+  font-family:'Barlow',sans-serif;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  transition:all 0.2s;-webkit-appearance:none;margin-top:10px;text-decoration:none;
+  box-shadow:0 4px 16px rgba(37,211,102,0.25);
+}
+.btn-wa:active{transform:scale(0.97);}
+
+/* STATUS PILL */
+.status-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.08);color:var(--text);font-size:11px;font-weight:700;padding:5px 12px;border-radius:20px;margin-top:12px;letter-spacing:1px;text-transform:uppercase;}
+.pulse-dot{width:6px;height:6px;border-radius:50%;background:var(--cyan);animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.3}}
+
+/* OVERLAY */
+.overlay{display:none;position:fixed;inset:0;background:rgba(10,15,30,0.9);z-index:300;align-items:center;justify-content:center;flex-direction:column;gap:14px;backdrop-filter:blur(8px);}
+.overlay.show{display:flex;}
+.spin{width:40px;height:40px;border:3px solid var(--border2);border-top-color:var(--blue-lt);border-radius:50%;animation:spin 0.8s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.overlay-text{font-size:14px;color:var(--muted);font-weight:600;letter-spacing:1px;}
+.toast{position:fixed;bottom:calc(24px + var(--safe-bot));left:50%;transform:translateX(-50%);background:var(--card2);color:var(--text);font-size:13px;padding:10px 20px;border-radius:24px;opacity:0;transition:opacity 0.3s;pointer-events:none;z-index:400;white-space:nowrap;font-weight:600;box-shadow:var(--shadow-md);border:1px solid var(--border2);}
+.toast.show{opacity:1;}
+.toast.err{background:rgba(239,68,68,0.2);border-color:var(--red);color:var(--red);}
+
+@media(max-width:500px){.form-wrap{padding:16px 12px;}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">
+    <div style="display:flex;gap:0;">
+      <span class="logo-we">WE</span>
+      <span class="logo-tech" style="margin-left:4px;">TECH</span>
+    </div>
+    <span class="logo-tag">· Creando Conexiones ·</span>
+  </div>
+  <div style="font-size:11px;color:var(--muted);font-weight:700;letter-spacing:1px;">PAGO SEGURO 🔒</div>
+</div>
+
+<!-- SCREEN 1: DATOS DEL PEDIDO -->
+<div class="screen active" id="s-pedido">
+  <div class="hero">
+    <div class="hero-logo">
+      <span class="hero-logo-we">WE</span>
+      <span class="hero-logo-tech">TECH</span>
+      <div class="hero-slogan">· Creando Conexiones ·</div>
+    </div>
+    <div class="hero-divider"></div>
+    <div class="hero-title">PAGO PERSONALIZADO</div>
+    <div class="hero-sub">Ingresa los detalles de tu pedido y realiza tu pago de forma segura</div>
+  </div>
+
+  <div class="form-wrap">
+    <div class="card">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:800;font-size:20px;letter-spacing:1px;margin-bottom:4px;">DATOS DEL PEDIDO</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:20px;">Describe lo que necesitas y el monto a pagar</div>
+
+      <label class="field-label">Nombre completo</label>
+      <input class="field-input" id="nombre" type="text" placeholder="Tu nombre completo" autocomplete="name"/>
+
+      <label class="field-label">Correo electrónico</label>
+      <input class="field-input" id="email" type="email" placeholder="tu@correo.com" inputmode="email" autocomplete="email"/>
+
+      <label class="field-label">Teléfono</label>
+      <input class="field-input" id="telefono" type="tel" placeholder="+52 33 1234 5678" inputmode="tel"/>
+
+      <label class="field-label">Descripción del pedido</label>
+      <textarea class="field-input" id="concepto" placeholder="Ej: iPhone 14 Pro 256GB Negro, AirPods Pro 2da gen..."></textarea>
+
+      <label class="field-label">Monto a pagar (MXN)</label>
+      <div style="position:relative;margin-bottom:14px;">
+        <span style="position:absolute;left:16px;top:50%;transform:translateY(-50%);font-size:16px;color:var(--muted);font-weight:700;">$</span>
+        <input class="field-input" id="monto" type="number" placeholder="0.00" inputmode="decimal" style="padding-left:32px;margin-bottom:0;" oninput="actualizarMonto()"/>
+      </div>
+
+      <div id="monto-preview" style="display:none;" class="monto-preview">
+        <div class="monto-preview-label">Total a pagar</div>
+        <div class="monto-preview-val" id="monto-display">$0</div>
+      </div>
+
+      <button class="btn-main" onclick="irAPago()">VER RESUMEN Y PAGAR →</button>
+    </div>
+
+    <!-- INFO PAGO TRANSFERENCIA -->
+    <div class="card">
+      <div style="font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;font-weight:700;margin-bottom:12px;">🏦 También puedes pagar por transferencia</div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--muted);">Banco</span><span style="font-weight:700;">BBVA</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--muted);">Titular</span><span style="font-weight:700;">Pedro Luis Bueno Aragón</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;"><span style="color:var(--muted);">Tarjeta</span><span style="font-family:monospace;font-weight:700;color:var(--blue-lt);">4152 3145 7105 1666</span></div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;font-size:13px;"><span style="color:var(--muted);">CLABE</span><span style="font-family:monospace;font-weight:700;color:var(--blue-lt);">012342004714119340</span></div>
+      <div style="margin-top:12px;padding:10px 12px;background:rgba(37,99,235,0.08);border-radius:8px;font-size:12px;color:var(--muted);">
+        💡 Si pagas por transferencia, envíanos tu comprobante por WhatsApp con tu nombre y descripción del pedido.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SCREEN 2: CONFIRMACIÓN Y PAGO -->
+<div class="screen" id="s-confirm">
+  <div class="form-wrap" style="padding-top:16px;padding-bottom:40px;">
+    <div class="confirm-card">
+      <div class="confirm-top">
+        <div style="font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px;font-weight:700;" id="conf-num">PEDIDO #—</div>
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:900;color:var(--text);margin-bottom:3px;letter-spacing:1px;">PEDIDO GENERADO ✓</div>
+        <div style="font-size:13px;color:var(--muted);">Completa tu pago para confirmarlo</div>
+        <div class="status-pill"><div class="pulse-dot"></div>PENDIENTE DE PAGO</div>
+      </div>
+      <div class="confirm-body">
+        <div class="summary-box">
+          <div class="summary-label">Resumen del pedido</div>
+          <div class="summary-item"><span class="summary-item-key">👤 Cliente</span><span class="summary-item-val" id="conf-nombre"></span></div>
+          <div class="summary-item"><span class="summary-item-key">📱 Pedido</span><span class="summary-item-val" id="conf-concepto"></span></div>
+          <div class="summary-item"><span class="summary-item-key">📧 Correo</span><span class="summary-item-val" id="conf-email"></span></div>
+        </div>
+        <div class="summary-total">
+          <span class="total-label">Total a pagar</span>
+          <span class="total-amt" id="conf-monto">$0</span>
+        </div>
+
+        <div class="notif-box" id="notif-box"></div>
+
+        <div style="margin-top:16px;padding-top:16px;border-top:1px solid var(--border);">
+          <div style="font-size:11px;color:var(--muted);text-align:center;margin-bottom:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;">Elige cómo pagar</div>
+          <button class="btn-mp" id="btn-mp" onclick="pagarConMP()">💳 Pagar con Mercado Pago</button>
+          <div style="text-align:center;font-size:11px;color:var(--muted);margin:8px 0;">Tarjeta · SPEI · OXXO · Mercado Pago</div>
+          <a id="btn-wa" href="#" target="_blank" class="btn-wa">💬 Confirmar por WhatsApp</a>
+        </div>
+      </div>
+    </div>
+    <button class="btn-ghost" onclick="goTo('s-pedido')">← Regresar</button>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"><div class="spin"></div><div class="overlay-text">REGISTRANDO PEDIDO...</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbxXLaEahcWmI8hCHhK8GrPX3kCbqWdp-qhgLLNIBwtUlUkW0aJYnd539bqNFQzh1qCq1Q/exec';
+const WA_SOPORTE = '523411219060';
+const state = { nombre:'', email:'', telefono:'', concepto:'', monto:0, orderId:'' };
+
+function actualizarMonto(){
+  const v = parseFloat(document.getElementById('monto').value);
+  const preview = document.getElementById('monto-preview');
+  const display = document.getElementById('monto-display');
+  if(v > 0){
+    preview.style.display = 'block';
+    display.textContent = '$' + v.toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2});
+  } else {
+    preview.style.display = 'none';
+  }
+}
+
+function irAPago(){
+  const nombre = document.getElementById('nombre').value.trim();
+  const email = document.getElementById('email').value.trim();
+  const concepto = document.getElementById('concepto').value.trim();
+  const monto = parseFloat(document.getElementById('monto').value);
+  if(!nombre || !email){ toast('Completa nombre y correo', 'err'); return; }
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){ toast('Correo no válido', 'err'); return; }
+  if(!concepto){ toast('Describe tu pedido', 'err'); return; }
+  if(!monto || monto <= 0){ toast('Ingresa un monto válido', 'err'); return; }
+  state.nombre = nombre;
+  state.email = email;
+  state.telefono = document.getElementById('telefono').value;
+  state.concepto = concepto;
+  state.monto = monto;
+  state.orderId = 'WT-' + Math.floor(Math.random()*90000+10000);
+  document.getElementById('conf-num').textContent = 'PEDIDO ' + state.orderId;
+  document.getElementById('conf-nombre').textContent = state.nombre;
+  document.getElementById('conf-concepto').textContent = state.concepto;
+  document.getElementById('conf-email').textContent = state.email;
+  document.getElementById('conf-monto').textContent = '$' + state.monto.toLocaleString('es-MX', {minimumFractionDigits:2});
+  const waMsg = encodeURIComponent(
+    `📱 *PEDIDO WETECH — ${state.orderId}*\n` +
+    `*Cliente:* ${state.nombre}\n` +
+    `*Email:* ${state.email}\n` +
+    `*Tel:* ${state.telefono||'—'}\n` +
+    `*Pedido:* ${state.concepto}\n` +
+    `*TOTAL: $${state.monto.toLocaleString('es-MX')} MXN*\n\n` +
+    `Adjunto mi comprobante de pago. ✅`
+  );
+  document.getElementById('btn-wa').href = `https://wa.me/${WA_SOPORTE}?text=${waMsg}`;
+  goTo('s-confirm');
+  registrarEnSheet();
+}
+
+async function registrarEnSheet(){
+  document.getElementById('notif-box').innerHTML = `<div class="notif-row" style="background:rgba(255,255,255,0.05);border:1px solid var(--border2);color:var(--muted);">⏳ Registrando tu pedido...</div>`;
+  document.getElementById('overlay').classList.add('show');
+  const now = new Date();
+  const fecha = now.toLocaleDateString('es-MX',{day:'2-digit',month:'2-digit',year:'numeric'})+' '+now.toLocaleTimeString('es-MX',{hour:'2-digit',minute:'2-digit'});
+  try{
+    await fetch(SHEETS_URL,{
+      method:'POST',mode:'no-cors',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        fecha, pedido:state.orderId, nombre:state.nombre,
+        email:state.email, telefono:state.telefono||'',
+        direccion:'Coordinado directamente',
+        productos:state.concepto,
+        total:'$'+state.monto.toLocaleString('es-MX'),
+        descuento:'Sin descuento', notas:'WeTech — Pedido personalizado',
+      })
+    });
+  }catch(e){console.error('Sheet:',e);}
+  document.getElementById('overlay').classList.remove('show');
+  document.getElementById('notif-box').innerHTML = `<div class="notif-row notif-ok">✅ Pedido registrado correctamente</div>`;
+}
+
+async function pagarConMP(){
+  const btn = document.getElementById('btn-mp');
+  btn.disabled = true;
+  btn.innerHTML = '⏳ Generando link de pago...';
+  try{
+    const res = await fetch('/.netlify/functions/crear-pago',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        total: Math.round(state.monto),
+        descripcion: 'WeTech — ' + state.concepto.substring(0,50) + ' — ' + state.orderId,
+        pedido_id: state.orderId,
+        email: state.email,
+      })
+    });
+    const data = await res.json();
+    if(data.url){ window.location.href = data.url; }
+    else throw new Error('Sin URL');
+  }catch(e){
+    console.error('MP:',e);
+    btn.disabled = false;
+    btn.innerHTML = '💳 Pagar con Mercado Pago';
+    toast('Error al generar el pago — usa WhatsApp', 'err');
+  }
+}
+
+function goTo(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function toast(msg,type=''){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast'+(type==='err'?' err':'');
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2500);
+}
+</script>
+</body>
+</html>
